@@ -62,7 +62,7 @@ MONGODB_URI=mongodb://127.0.0.1:27017/mrs-traders
 COMPANY_NAME=M.R.S Traders
 COMPANY_TYPE=Electrical & Plumbing Shop
 ADMIN_NAME=Raja
-ADMIN_WHATSAPP=919876543210
+ADMIN_WHATSAPP=918489820801
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX_REQUESTS=5
 ```
@@ -113,8 +113,11 @@ npm start
 
 1. Start the backend server.
 2. Watch the terminal for the QR code.
-3. Scan it using the admin WhatsApp account.
+3. Scan it using the WhatsApp account that should stay logged into the app.
 4. Session files are stored in `whatsapp-session/auth-files`.
+
+`ADMIN_WHATSAPP` is only the destination number for enquiry notifications.
+It does not control QR authentication or which account scans the QR code.
 
 ## Do Not Commit To Git
 

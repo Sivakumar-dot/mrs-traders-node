@@ -5,9 +5,60 @@ const { appLogger } = require('../utils/logger');
 const { APP_CONSTANTS } = require('../utils/constants');
 
 let whatsappClient;
+let reinitializeTimer;
+let isReinitializing = false;
+let isShuttingDown = false;
 let clientState = {
   isReady: false,
   lastEvent: 'initializing'
+};
+
+const clearReinitializeTimer = () => {
+  if (reinitializeTimer) {
+    clearTimeout(reinitializeTimer);
+    reinitializeTimer = null;
+  }
+};
+
+const createAndInitializeClient = async () => {
+  const client = buildClient();
+  whatsappClient = client;
+  registerEvents(client);
+  await client.initialize();
+  return client;
+};
+
+const scheduleReinitialize = (reason) => {
+  if (isShuttingDown || isReinitializing || reinitializeTimer) {
+    return;
+  }
+
+  clientState = {
+    ...clientState,
+    isReady: false,
+    lastEvent: 'reinitializing'
+  };
+
+  reinitializeTimer = setTimeout(async () => {
+    reinitializeTimer = null;
+
+    if (isShuttingDown || whatsappClient) {
+      return;
+    }
+
+    isReinitializing = true;
+
+    try {
+      appLogger.info('Reinitializing WhatsApp client.', { reason });
+      await createAndInitializeClient();
+    } catch (error) {
+      whatsappClient = null;
+      appLogger.error('WhatsApp client reinitialization failed.', { reason, error: error.message });
+      scheduleReinitialize('retry_after_failure');
+    } finally {
+      isReinitializing = false;
+    }
+  }, 1500);
 };
 
 const buildClient = () =>
@@ -30,7 +81,7 @@ const registerEvents = (client) => {
       lastEvent: 'qr'
     };
     qrcode.generate(qr, { small: true });
-    appLogger.info('WhatsApp QR generated. Scan using the admin device.');
+    appLogger.info('WhatsApp QR generated. Scan using the WhatsApp account that should stay connected.');
   });
 
   client.on('ready', () => {
@@ -67,15 +118,11 @@ const registerEvents = (client) => {
     };
     appLogger.error('WhatsApp client disconnected.', { reason });
 
-    try {
-      await client.destroy();
-    } catch (error) {
-      appLogger.error('Failed to destroy disconnected WhatsApp client.', { error: error.message });
+    if (whatsappClient === client) {
+      whatsappClient = null;
     }
 
-    whatsappClient = buildClient();
-    registerEvents(whatsappClient);
-    await whatsappClient.initialize();
+    scheduleReinitialize(reason);
   });
 
   client.on('loading_screen', (percent, message) => {
@@ -88,14 +135,13 @@ const registerEvents = (client) => {
 };
 
 const initializeWhatsAppClient = async () => {
+  isShuttingDown = false;
+
   if (whatsappClient) {
     return whatsappClient;
   }
 
-  whatsappClient = buildClient();
-  registerEvents(whatsappClient);
-  await whatsappClient.initialize();
-  return whatsappClient;
+  return createAndInitializeClient();
 };
 
 const getWhatsAppClient = () => whatsappClient;
@@ -105,6 +151,9 @@ const getWhatsAppState = () => ({
 });
 
 const destroyWhatsAppClient = async () => {
+  isShuttingDown = true;
+  clearReinitializeTimer();
+
   if (!whatsappClient) {
     return;
   }

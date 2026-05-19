@@ -10,6 +10,9 @@ const envConfig = {
   companyType: process.env.COMPANY_TYPE || 'Electrical & Plumbing Shop',
   adminName: process.env.ADMIN_NAME || 'Raja',
   adminWhatsApp: process.env.ADMIN_WHATSAPP || '',
+  adminUsername: process.env.ADMIN_USERNAME || '',
+  adminPassword: process.env.ADMIN_PASSWORD || '',
+  jwtSecret: process.env.JWT_SECRET || '',
   rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS || 60000),
   rateLimitMaxRequests: Number(process.env.RATE_LIMIT_MAX_REQUESTS || 5)
 };

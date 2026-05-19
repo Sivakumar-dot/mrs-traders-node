@@ -3,6 +3,7 @@ const cors = require('cors');
 const { configureApp } = require('./config/app.config');
 const enquiryRoutes = require('./routes/enquiry.routes');
 const adminRoutes = require('./routes/admin.routes');
+const companyRoutes = require('./routes/company.routes');
 const healthRoutes = require('./routes/health.routes');
 const { requestLogger } = require('./middleware/requestLogger');
 const { notFoundHandler } = require('./middleware/notFoundHandler');
@@ -20,6 +21,7 @@ const createApp = () => {
 
   app.use('/api/enquiry', enquiryRoutes);
   app.use('/api/admin', adminRoutes);
+  app.use('/api/company', companyRoutes);
   app.use('/api/health', healthRoutes);
 
   app.use(notFoundHandler);

@@ -5,6 +5,7 @@ const { appLogger } = require('../utils/logger');
 const connectDatabase = async () => {
   try {
     await mongoose.connect(databaseConfig.uri, databaseConfig.options);
+    console.log(`MongoDB connected successfully: ${databaseConfig.uri}`);
     appLogger.info('MongoDB connected successfully.', { uri: databaseConfig.uri });
   } catch (error) {
     appLogger.error('MongoDB connection failed.', {

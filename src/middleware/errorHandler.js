@@ -5,7 +5,7 @@ const { APP_CONSTANTS } = require('../utils/constants');
 
 const errorHandler = async (error, req, res, next) => {
   const statusCode = error.statusCode || 500;
-  const message = error.message || 'Internal server error';
+  const message = statusCode === 500 ? 'Internal server error.' : error.message;
 
   appLogger.error(message, {
     requestId: req.requestId,

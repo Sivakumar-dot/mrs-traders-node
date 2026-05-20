@@ -1,3 +1,1 @@
-const validateAdminPayload = (req, res, next) => next();
-
-module.exports = { validateAdminPayload };
+module.exports = require('../modules/admin/validators/admin.validator');

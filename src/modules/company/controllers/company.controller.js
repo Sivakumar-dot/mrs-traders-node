@@ -16,6 +16,21 @@ const getCompanySettings = async (req, res, next) => {
   }
 };
 
+const getPublicCompanySettings = async (req, res, next) => {
+  try {
+    const settings = await companyService.getCompanySettings();
+
+    return successResponse({
+      res,
+      message: 'Company details fetched successfully.',
+      requestId: req.requestId,
+      data: settings
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const updateCompanySettings = async (req, res, next) => {
   try {
     const settings = await companyService.updateCompanySettings(req.body);
@@ -31,4 +46,4 @@ const updateCompanySettings = async (req, res, next) => {
   }
 };
 
-module.exports = { getCompanySettings, updateCompanySettings };
+module.exports = { getCompanySettings, getPublicCompanySettings, updateCompanySettings };

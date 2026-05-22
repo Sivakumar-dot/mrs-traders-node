@@ -2,12 +2,13 @@ const { body } = require('express-validator');
 
 const companyFields = [
   'companyName',
+  'companyService',
   'ownerName',
   'address',
   'mobileNumber',
   'whatsappNumber',
   'email',
-  'mapUrl',
+  'googleMapUrl',
   'businessHours'
 ];
 
@@ -25,21 +26,6 @@ validateCompanySettings.push(
     .optional()
     .custom((value) => value === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
     .withMessage('email must be a valid email address.'),
-  body('mapUrl')
-    .optional()
-    .custom((value) => {
-      if (value === '') {
-        return true;
-      }
-
-      try {
-        const parsedUrl = new URL(value);
-        return ['http:', 'https:'].includes(parsedUrl.protocol);
-      } catch (error) {
-        return false;
-      }
-    })
-    .withMessage('mapUrl must be a valid URL.'),
   body('mobileNumber')
     .optional()
     .custom((value) => value === '' || /^[0-9+\-\s]{10,20}$/.test(value))

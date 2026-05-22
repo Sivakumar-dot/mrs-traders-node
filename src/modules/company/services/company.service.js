@@ -5,14 +5,21 @@ const companySettingsFile = path.join(process.cwd(), 'src', 'data', 'company-set
 
 const defaultCompanySettings = {
   companyName: '',
+  companyService: '',
   ownerName: '',
   address: '',
   mobileNumber: '',
   whatsappNumber: '',
   email: '',
-  mapUrl: '',
+  googleMapUrl: '',
   businessHours: ''
 };
+
+const normalizeCompanySettings = (settings = {}) => ({
+  ...defaultCompanySettings,
+  ...settings,
+  googleMapUrl: settings.googleMapUrl || settings.mapUrl || ''
+});
 
 const ensureSettingsFile = async () => {
   await fs.mkdir(path.dirname(companySettingsFile), { recursive: true });
@@ -33,14 +40,21 @@ const getCompanySettings = async () => {
   const fileContent = await fs.readFile(companySettingsFile, 'utf8');
   const parsedContent = JSON.parse(fileContent);
 
-  return { ...defaultCompanySettings, ...parsedContent };
+  return normalizeCompanySettings(parsedContent);
 };
 
 const updateCompanySettings = async (payload) => {
   const currentSettings = await getCompanySettings();
+  const normalizedPayload = {
+    ...payload,
+    googleMapUrl:
+      typeof payload.googleMapUrl === 'string'
+        ? payload.googleMapUrl
+        : payload.mapUrl
+  };
   const sanitizedSettings = Object.keys(defaultCompanySettings).reduce((settings, key) => {
-    if (typeof payload[key] === 'string') {
-      settings[key] = payload[key].trim();
+    if (typeof normalizedPayload[key] === 'string') {
+      settings[key] = normalizedPayload[key].trim();
       return settings;
     }
 

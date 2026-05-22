@@ -1,10 +1,11 @@
 {
   "companyName": "M.R.S Traders",
+  "companyService": "Electrical, Plumbing & Lighting Store",
   "ownerName": "Raja",
-  "address": "3/1",
+  "address": "3/1 Azath Nagar 2nd street, Ayyampet, Thanjavur, Tamilnadu, 614201.",
   "mobileNumber": "9943459843",
   "whatsappNumber": "9943459843",
   "email": "szxciva420@gmail.com",
-  "mapUrl": "",
-  "businessHours": "123"
+  "googleMapUrl": "20.595306, 78.959841",
+  "businessHours": "Monday: 09:00 - 20:00\nTuesday: 09:00 - 20:00\nWednesday: 09:00 - 20:00\nThursday: 09:00 - 20:00\nFriday: 09:00 - 20:00\nSaturday: 09:00 - 20:00\nSunday: 09:00 - 13:00"
 }

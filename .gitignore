@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-frontend/node_modules/
 
 # Environment files
 .env
@@ -13,9 +12,6 @@ frontend/node_modules/
 dist/
 build/
 coverage/
-frontend/dist/
-frontend/.angular/
-frontend/.cache/
 
 # Logs
 logs/*.log

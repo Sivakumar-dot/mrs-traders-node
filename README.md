@@ -6,25 +6,12 @@ Production-ready enquiry platform for **M.R.S Traders** using:
 - Express.js
 - MongoDB with Mongoose
 - `whatsapp-web.js`
-- Angular
 
 ## Architecture
 
 Backend uses layered enterprise structure:
 
 `Route -> Controller -> Service -> Repository -> MongoDB`
-
-Frontend uses modular Angular structure:
-
-- `core/`
-- `shared/`
-- `services/`
-- `interceptors/`
-- `guards/`
-- `modules/enquiry`
-- `modules/admin`
-- `modules/auth`
-- `layouts/`
 
 ## Backend Features
 
@@ -42,7 +29,7 @@ Frontend uses modular Angular structure:
 
 ## Enquiry Flow
 
-1. Angular form submits enquiry to Node API
+1. Frontend client submits enquiry to Node API
 2. Request is validated
 3. Enquiry is stored in MongoDB
 4. WhatsApp admin notification is generated
@@ -81,13 +68,6 @@ Backend dev dependency:
 npm install -D nodemon
 ```
 
-Frontend Angular dependencies:
-
-```bash
-cd frontend
-npm install
-```
-
 ## Run Commands
 
 Backend development:
@@ -99,13 +79,6 @@ npm run dev
 Backend production:
 
 ```bash
-npm start
-```
-
-Frontend development:
-
-```bash
-cd frontend
 npm start
 ```
 
@@ -124,9 +97,8 @@ It does not control QR authentication or which account scans the QR code.
 These items should not be pushed to the git repository:
 
 - `.env` and other local environment files
-- `node_modules/` and `frontend/node_modules/`
-- `dist/`, `build/`, `coverage/`, and `frontend/dist/`
-- `frontend/.angular/` and `frontend/.cache/`
+- `node_modules/`
+- `dist/`, `build/`, and `coverage/`
 - `logs/error.log`, `logs/combined.log`, and `logs/requests.log`
 - `whatsapp-session/auth-files/` because it contains WhatsApp login session data
 - local editor folders like `.vscode/` and `.idea/`

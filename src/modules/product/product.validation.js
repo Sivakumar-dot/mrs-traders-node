@@ -37,6 +37,14 @@ const validateProductId = [
 ];
 
 const validateCreateProduct = [
+  body('productCode')
+    .optional()
+    .isString()
+    .withMessage('productCode must be a string.')
+    .bail()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage('productCode must not exceed 100 characters.'),
   body('categoryId')
     .exists({ checkFalsy: true })
     .withMessage('Category is required.')
@@ -53,10 +61,42 @@ const validateCreateProduct = [
     .trim()
     .notEmpty()
     .withMessage('Product name is required.'),
+  body('brand')
+    .optional()
+    .isString()
+    .withMessage('brand must be a string.')
+    .bail()
+    .trim()
+    .isLength({ max: 150 })
+    .withMessage('brand must not exceed 150 characters.'),
   body('description')
     .optional()
     .isString()
     .withMessage('Description must be a string.')
+    .bail()
+    .trim(),
+  body('price')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('price must be a non-negative number.')
+    .toFloat(),
+  body('quantity')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('quantity must be a non-negative number.')
+    .toFloat(),
+  body('uom')
+    .optional()
+    .isString()
+    .withMessage('uom must be a string.')
+    .bail()
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage('uom must not exceed 50 characters.'),
+  body('imageUrl')
+    .optional()
+    .isString()
+    .withMessage('imageUrl must be a string.')
     .bail()
     .trim(),
   body('isActive')
@@ -68,6 +108,14 @@ const validateCreateProduct = [
 
 const validateUpdateProduct = [
   ...validateProductId,
+  body('productCode')
+    .optional()
+    .isString()
+    .withMessage('productCode must be a string.')
+    .bail()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage('productCode must not exceed 100 characters.'),
   body('categoryId')
     .exists({ checkFalsy: true })
     .withMessage('Category is required.')
@@ -84,10 +132,42 @@ const validateUpdateProduct = [
     .trim()
     .notEmpty()
     .withMessage('Product name is required.'),
+  body('brand')
+    .optional()
+    .isString()
+    .withMessage('brand must be a string.')
+    .bail()
+    .trim()
+    .isLength({ max: 150 })
+    .withMessage('brand must not exceed 150 characters.'),
   body('description')
     .optional()
     .isString()
     .withMessage('Description must be a string.')
+    .bail()
+    .trim(),
+  body('price')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('price must be a non-negative number.')
+    .toFloat(),
+  body('quantity')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('quantity must be a non-negative number.')
+    .toFloat(),
+  body('uom')
+    .optional()
+    .isString()
+    .withMessage('uom must be a string.')
+    .bail()
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage('uom must not exceed 50 characters.'),
+  body('imageUrl')
+    .optional()
+    .isString()
+    .withMessage('imageUrl must be a string.')
     .bail()
     .trim(),
   body('isActive')
